@@ -2,10 +2,15 @@ import java.util.*;
 
 public class Graph<T> {
 	private ArrayList<ArrayList<Edge<T>>> adj = new ArrayList<>();
+	int finalWeight;
 
 	public Graph(int vertexes) {
 		for(int i = 0; i < vertexes; i++)
 			adj.add(new ArrayList<>());
+	}
+
+	public int getFinalWeight() {
+		return finalWeight;
 	}
 
 	public void addEdge(int start, int end, int weight) {
@@ -45,13 +50,15 @@ public class Graph<T> {
 		return minIndex;
 	}
 
-	public int dijkstra(int start, int end) {
+	public ArrayList<Integer> dijkstra(int start, int end) {
 		int vertex = adj.size();
 		int[] distances = new int[vertex];
+		int[] route = new int[vertex];
 		boolean[] visited = new boolean[vertex];
 
-		// vertices cuestan infinito e inicio cuesta 0
+		// vertices cuestan infinito, routa -1 e inicio cuesta 0
 		Arrays.fill(distances, Integer.MAX_VALUE);
+		Arrays.fill(route, -1);
 		distances[start] = 0;
 
 		for(int counter = 0; counter < (vertex -1); counter++) {
@@ -63,9 +70,31 @@ public class Graph<T> {
 				// y la estimación nueva es menor a la ya hecha
 				if(!visited[edge.end] && distances[estimated] != Integer.MAX_VALUE && distances[estimated] + edge.weight < distances[edge.end]) {
 					distances[edge.end] = distances[estimated] + edge.weight;
+					route[edge.end] = estimated;
 				}
 			}
 		}
-		return distances[end];
+		finalWeight = distances[end];
+		return path(route, end);
+	}
+
+	private ArrayList<Integer> path(int[] route, int end) {
+		ArrayList<Integer> path = new ArrayList<>();
+		int current = end;
+		while (current != -1) {
+            path.add(current);
+            current = route[current];
+        }
+		Collections.reverse(path);
+
+		return path;
+	}
+
+	public ArrayList<Character> path(ArrayList<Integer> route) {
+		ArrayList<Character> graphPath = new ArrayList<>();
+
+		route.forEach((n) -> graphPath.add(intToChart(n)));
+
+		return graphPath;
 	}
 }

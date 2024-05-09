@@ -6,4 +6,8 @@ public class Edge<T>{
 		this.end = end;
 		this.weight = weight;
 	}
+
+	public int getWeight() {
+		return weight;
+	}
 }

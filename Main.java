@@ -1,4 +1,13 @@
+import java.util.ArrayList;
+
 public class Main {
+
+	public char intToChart(int num) {
+		num += 65;
+		char ch = (char) num;
+		return ch;
+	}
+
 	public static void main(String[] args) {
 	//start main graph
 		Graph<Integer> grafo = new Graph<>(8);
@@ -34,9 +43,10 @@ public class Main {
 
 		grafo.printAdj();
 		int start = 0, end = 6; // De A a G
-		int minWeight = grafo.dijkstra(start, end);
+		ArrayList<Integer> path = grafo.dijkstra(start, end);
+		ArrayList<Character> graphPath = grafo.path(path);
 
-		System.out.println("El peso mínimo desde el vértice " + grafo.intToChart(start) + " hasta el vértice " + grafo.intToChart(end) + " es: " + minWeight);
+		System.out.println("La ruta de menor peso desde el vértice " + grafo.intToChart(start) + " hasta el vértice " + grafo.intToChart(end) + " es: " + graphPath + " con peso mínimo de " + grafo.getFinalWeight());
 	//end main graph
 	}
 }
